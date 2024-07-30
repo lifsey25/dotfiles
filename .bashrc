@@ -1,13 +1,6 @@
 #!/bin/bash
 iatest=$(expr index "$-" i)
 
-#######################################################
-# SOURCED ALIAS'S AND SCRIPTS BY zachbrowne.me
-#######################################################
-#if [ -f /usr/bin/fastfetch ]; then
-#	fastfetch
-#fi
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -87,12 +80,6 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-#######################################################
-# MACHINE SPECIFIC ALIAS'S
-#######################################################
-
-# Alias's for SSH
-# alias SERVERNAME='ssh YOURWEBSITE.com -l USERNAME -p PORTNUMBERHERE'
 
 # Alias's to change the directory
 alias web='cd /var/www/html'
@@ -112,8 +99,6 @@ alias web='cd /var/www/html'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Edit this .bashrc file
-alias ebrc='edit ~/.bashrc'
 
 # Show help for this .bashrc file
 alias hlp='less ~/.bashrc_help'
@@ -137,15 +122,9 @@ alias vis='nvim "+set si"'
 
 # Change directory aliases
 alias cd..='cd ..'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
 
 # cd into the old directory
 alias bd='cd "$OLDPWD"'
-
-# Remove a directory and all files
 
 # Alias's for multiple directory listing commands
 alias la='ls -Alh'                # show hidden files
@@ -162,14 +141,6 @@ alias ll='ls -Fls'                # long listing format
 alias labc='ls -lap'              #alphabetical sort
 alias lf="ls -l | egrep -v '^d'"  # files only
 alias ldir="ls -l | egrep '^d'"   # directories only
-
-# alias chmod commands
-alias mx='chmod a+x'
-alias 000='chmod -R 000'
-alias 644='chmod -R 644'
-alias 666='chmod -R 666'
-alias 755='chmod -R 755'
-alias 777='chmod -R 777'
 
 # Search command line history
 alias h="history | grep "
@@ -189,10 +160,6 @@ alias checkcommand="type -t"
 
 # Show open ports
 alias openports='netstat -nape --inet'
-
-# Alias's for safe and forced reboots
-alias rebootsafe='sudo shutdown -r now'
-alias rebootforce='sudo shutdown -r -n now'
 
 # Alias's to show disk space and space used in a folder
 alias diskspace="du -S | sort -n -r |more"
@@ -281,24 +248,6 @@ cpp() {
 	END { print "" }' total_size="$(stat -c '%s' "${1}")" count=0
 }
 
-# Copy and go to the directory
-cpg() {
-	if [ -d "$2" ]; then
-		cp "$1" "$2" && cd "$2"
-	else
-		cp "$1" "$2"
-	fi
-}
-
-# Move and go to the directory
-mvg() {
-	if [ -d "$2" ]; then
-		mv "$1" "$2" && cd "$2"
-	else
-		mv "$1" "$2"
-	fi
-}
-
 # Create and go to the directory
 mkdirg() {
 	mkdir -p "$1"
@@ -317,21 +266,6 @@ up() {
 		d=..
 	fi
 	cd $d
-}
-
-# Automatically do an ls after each cd, z, or zoxide
-#cd ()
-#{
-#	if [ -n "$1" ]; then
-#		builtin cd "$@" && ls
-#	else
-#		builtin cd ~ && ls
-#	fi
-#}
-
-# Returns the last 2 fields of the working directory
-pwdtail() {
-	pwd | awk -F/ '{nlast = NF -1;print $nlast"/"$NF}'
 }
 
 # Show the current distribution
@@ -370,46 +304,6 @@ distribution ()
 	echo $dtype
 }
 
-# Show the current version of the operating system
-ver() {
-	local dtype
-	dtype=$(distribution)
-
-	case $dtype in
-		"redhat")
-			if [ -s /etc/redhat-release ]; then
-				cat /etc/redhat-release
-			else
-				cat /etc/issue
-			fi
-			uname -a
-			;;
-		"suse")
-			cat /etc/SuSE-release
-			;;
-		"debian")
-			lsb_release -a
-			;;
-		"gentoo")
-			cat /etc/gentoo-release
-			;;
-		"arch")
-			cat /etc/os-release
-			;;
-		"slackware")
-			cat /etc/slackware-version
-			;;
-		*)
-			if [ -s /etc/issue ]; then
-				cat /etc/issue
-			else
-				echo "Error: Unknown distribution"
-				exit 1
-			fi
-			;;
-	esac
-}
-
 # Automatically install the needed support files for this .bashrc file
 install_bashrc_support() {
 	local dtype
@@ -434,7 +328,7 @@ install_bashrc_support() {
 			sudo apt-get install /tmp/fastfetch_latest_amd64.deb
 			;;
 		"arch")
-			sudo paru multitail tree zoxide trash-cli fzf bash-completion fastfetch
+			yay -S multitail tree zoxide trash-cli fzf bash-completion fastfetch
 			;;
 		"slackware")
 			echo "No install support for Slackware"
@@ -446,7 +340,7 @@ install_bashrc_support() {
 }
 
 # IP address lookup
-alias whatismyip="whatsmyip"
+alias getip="whatsmyip"
 function whatsmyip ()
 {
 	# Internal IP Lookup.
@@ -463,86 +357,12 @@ function whatsmyip ()
 	curl -s ifconfig.me
 }
 
-# View Apache logs
-apachelog() {
-	if [ -f /etc/httpd/conf/httpd.conf ]; then
-		cd /var/log/httpd && ls -xAh && multitail --no-repeat -c -s 2 /var/log/httpd/*_log
-	else
-		cd /var/log/apache2 && ls -xAh && multitail --no-repeat -c -s 2 /var/log/apache2/*.log
-	fi
-}
-
-# Edit the Apache configuration
-apacheconfig() {
-	if [ -f /etc/httpd/conf/httpd.conf ]; then
-		sedit /etc/httpd/conf/httpd.conf
-	elif [ -f /etc/apache2/apache2.conf ]; then
-		sedit /etc/apache2/apache2.conf
-	else
-		echo "Error: Apache config file could not be found."
-		echo "Searching for possible locations:"
-		sudo updatedb && locate httpd.conf && locate apache2.conf
-	fi
-}
-
-# Edit the PHP configuration file
-phpconfig() {
-	if [ -f /etc/php.ini ]; then
-		sedit /etc/php.ini
-	elif [ -f /etc/php/php.ini ]; then
-		sedit /etc/php/php.ini
-	elif [ -f /etc/php5/php.ini ]; then
-		sedit /etc/php5/php.ini
-	elif [ -f /usr/bin/php5/bin/php.ini ]; then
-		sedit /usr/bin/php5/bin/php.ini
-	elif [ -f /etc/php5/apache2/php.ini ]; then
-		sedit /etc/php5/apache2/php.ini
-	else
-		echo "Error: php.ini file could not be found."
-		echo "Searching for possible locations:"
-		sudo updatedb && locate php.ini
-	fi
-}
-
-# Edit the MySQL configuration file
-mysqlconfig() {
-	if [ -f /etc/my.cnf ]; then
-		sedit /etc/my.cnf
-	elif [ -f /etc/mysql/my.cnf ]; then
-		sedit /etc/mysql/my.cnf
-	elif [ -f /usr/local/etc/my.cnf ]; then
-		sedit /usr/local/etc/my.cnf
-	elif [ -f /usr/bin/mysql/my.cnf ]; then
-		sedit /usr/bin/mysql/my.cnf
-	elif [ -f ~/my.cnf ]; then
-		sedit ~/my.cnf
-	elif [ -f ~/.my.cnf ]; then
-		sedit ~/.my.cnf
-	else
-		echo "Error: my.cnf file could not be found."
-		echo "Searching for possible locations:"
-		sudo updatedb && locate my.cnf
-	fi
-}
-
-
 # Trim leading and trailing spaces (for scripts)
 trim() {
 	local var=$*
 	var="${var#"${var%%[![:space:]]*}"}" # remove leading whitespace characters
 	var="${var%"${var##*[![:space:]]}"}" # remove trailing whitespace characters
 	echo -n "$var"
-}
-# GitHub Titus Additions
-
-gcom() {
-	git add .
-	git commit -m "$1"
-}
-lazyg() {
-	git add .
-	git commit -m "$1"
-	git push
 }
 
 function hb {
