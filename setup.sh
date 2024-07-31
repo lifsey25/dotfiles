@@ -2,7 +2,7 @@
 
 # chmod u+x to make executable
 
-DOTFILES_DIR="/home/jamison/dotfiles" # set directory with username
+DOTFILES_DIR="~/dotfiles" # must clone in user's home directory or edit variable
 
 backup() {
   mv ~/.bashrc ~/.bashrc.bak
