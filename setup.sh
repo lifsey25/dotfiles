@@ -11,6 +11,9 @@ backup() {
     mv ~/.config/i3/config ~/.config/i3/config.bak
   fi
 
+  if [ -f ~/.config/i3status/config ]; then
+    mv ~/.config/i3status/config ~/.config/i3status/config.bak
+
   if [ -f ~/.config/kitty/kitty.conf ]; then
     mv ~/.config/kitty/kitty.conf ~/.config/kitty/kitty.conf.bak
   fi
@@ -19,6 +22,7 @@ backup() {
 add_custom_config() {
   cp "$DOTFILES_DIR"/.bashrc ~/.bashrc
   cp "$DOTFILES_DIR"/.config/i3/config ~/.config/i3/config
+  cp "$DOTFILES_DIR"/.config/i3status/config ~/.config/i3status/config
   cp "$DOTFILES_DIR"/.config/kitty/kitty.conf ~/.config/kitty/kitty.conf
 }
 
