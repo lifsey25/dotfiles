@@ -1,11 +1,17 @@
-#!usr/bin/env bash
+#!/usr/bin/env bash
 
 # chmod u+x to make executable
 
 backup() {
   mv ~/.bashrc ~/.bashrc.bak
-  mv ~/.config/i3/config ~/.config/i3/config.bak
-  mv ~/.config/kitty/kitty.conf ~/.config/kitty/kitty.conf
+
+  if [ -f ~/.config/i3/config ]; then
+    mv ~/.config/i3/config ~/.config/i3/config.bak
+  fi
+
+  if [ -f ~/.config/kitty/kitty.conf ]; then
+    mv ~/.config/kitty/kitty.conf ~/.config/kitty/kitty.conf.bak
+  fi
 }
 
 add_custom_config() {
@@ -15,6 +21,6 @@ add_custom_config() {
 }
 
 echo "backing up old config files"
-backup()
+backup
 echo "copying new config files from dotfiles directory"
-add_custom_config()
+add_custom_config
