@@ -13,6 +13,7 @@ backup() {
 
   if [ -f ~/.config/i3status/config ]; then
     mv ~/.config/i3status/config ~/.config/i3status/config.bak
+  fi
 
   if [ -f ~/.config/kitty/kitty.conf ]; then
     mv ~/.config/kitty/kitty.conf ~/.config/kitty/kitty.conf.bak
