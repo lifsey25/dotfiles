@@ -2,10 +2,12 @@
 
 # chmod u+x to make executable
 
-DOTFILES_DIR="~/dotfiles" # must clone in user's home directory or edit variable
+DOTFILES_DIR="$(pwd)" # must clone in user's home directory or edit variable
 
 backup() {
-  mv ~/.bashrc ~/.bashrc.bak
+  if [ -f ~/.bashrc ]; then
+    mv ~/.bashrc ~/.bashrc.bak
+  fi
 
   if [ -f ~/.config/i3/config ]; then
     mv ~/.config/i3/config ~/.config/i3/config.bak
