@@ -2,7 +2,7 @@
 
 # chmod u+x to make executable
 
-DOTFILES_DIR="$(pwd)" # must clone in user's home directory or edit variable
+DOTFILES_DIR="~/dotfiles" # must clone in user's home directory or edit variable
 
 install_yay() {
   if ! command -v yay &> /dev/null; then
@@ -15,9 +15,7 @@ install_yay() {
 }
 
 backup() {
-  if [ -f ~/.bashrc ]; then
-    mv ~/.bashrc ~/.bashrc.bak
-  fi
+  mv ~/.bashrc ~/.bashrc.bak
 
   if [ -f ~/.config/i3/config ]; then
     mv ~/.config/i3/config ~/.config/i3/config.bak
