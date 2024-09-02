@@ -1,18 +1,9 @@
 #!/usr/bin/env bash
+# TODO: setup symlinks
 
 # chmod u+x to make executable
 
 DOTFILES_DIR="~/dotfiles" # must clone in user's home directory or edit variable
-
-install_yay() {
-  if ! command -v yay &> /dev/null; then
-    echo "yay is not installed. installing..."
-    sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
-    echo "installation complete"
-  else
-    echo "yay is already installed"
-  fi
-}
 
 backup() {
   mv ~/.bashrc ~/.bashrc.bak
