@@ -3,7 +3,7 @@
 
 # chmod u+x to make executable
 
-DOTFILES_DIR="$PWD" # must clone in user's home directory or edit variable
+DOTFILES_DIR="$HOME"
 
 backup() {
   mv ~/.bashrc ~/.bashrc.bak
