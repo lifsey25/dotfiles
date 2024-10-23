@@ -1,6 +1,7 @@
 #!/bin/bash
 iatest=$(expr index "$-" i)
 
+# feh --bg-scale /home/jamison/Pictures/wallpaper.jpg
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -12,6 +13,16 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
 elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
+
+# enable changing directory through yazi. 'q' to change, 'Q' to quit without changing
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
 
 #######################################################
 # EXPORTS
@@ -53,16 +64,7 @@ alias nano='edit'
 alias snano='sedit'
 alias vim='nvim'
 
-# Replace batcat with cat on Fedora as batcat is not available as a RPM in any form
-if command -v lsb_release >/dev/null; then
-	DISTRIBUTION=$(lsb_release -si)
-
-	if [ "$DISTRIBUTION" = "Fedora" ] || [ "$DISTRIBUTION" = "Arch" ]; then
-		alias cat='bat'
-	else
-		alias cat='batcat'
-	fi
-fi
+alias cat='bat'
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1
@@ -111,7 +113,7 @@ alias da='date "+%Y-%m-%d %A %T %Z"'
 # Alias's to modified commands
 alias cp='cp -i'
 alias mv='mv -i'
-alias rm='trash -v'
+# alias rm='trash -v'
 alias mkdir='mkdir -p'
 alias ps='ps auxf'
 # alias ping='ping -c 10'
