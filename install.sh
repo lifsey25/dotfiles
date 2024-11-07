@@ -22,5 +22,5 @@ install_i3() {
 }
 
 install_misc() {
-  yay -S btop firefox librewolf-bin ripgrep neovim 
+  yay -S btop firefox librewolf-bin ripgrep neovim eza
 }
