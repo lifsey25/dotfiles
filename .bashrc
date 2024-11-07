@@ -1,7 +1,7 @@
 #!/bin/bash
 iatest=$(expr index "$-" i)
 
-# feh --bg-scale /home/jamison/Pictures/wallpaper.jpg
+#feh --bg-scale /home/jamison/Pictures/wallpaper.jpg
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -14,15 +14,7 @@ elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
 
-# enable changing directory through yazi. 'q' to change, 'Q' to quit without changing
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
-}
+
 
 #######################################################
 # EXPORTS
@@ -104,11 +96,8 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # alias to run linutil
 alias linutil='curl -fsSL https://christitus.com/linux | sh'
 
-# Show help for this .bashrc file
-alias hlp='less ~/.bashrc_help'
-
-# alias to show the date
-alias da='date "+%Y-%m-%d %A %T %Z"'
+# alias to check the weather
+alias weather='curl wttr.in'
 
 # Alias's to modified commands
 alias cp='cp -i'
@@ -131,20 +120,9 @@ alias cd..='cd ..'
 alias bd='cd "$OLDPWD"'
 
 # Alias's for multiple directory listing commands
-alias la='ls -Alh'                # show hidden files
-alias ls='ls -Fhl --color=always' # add colors and file type extensions
-alias lx='ls -lXBh'               # sort by extension
-alias lk='ls -lSrh'               # sort by size
-alias lc='ls -lcrh'               # sort by change time
-alias lu='ls -lurh'               # sort by access time
-alias lr='ls -lRh'                # recursive ls
-alias lt='ls -ltrh'               # sort by date
-alias lm='ls -alh |more'          # pipe through 'more'
-alias lw='ls -xAh'                # wide listing format
-alias ll='ls -Fls'                # long listing format
-alias labc='ls -lap'              #alphabetical sort
-alias lf="ls -l | egrep -v '^d'"  # files only
-alias ldir="ls -l | egrep '^d'"   # directories only
+alias la='eza -ahlg --color=always'                # show hidden files
+alias ls='eza -hlg --color=always' # add colors and file type extensions
+alias tree='eza -l --tree --level=4'
 
 # Search command line history
 alias h="history | grep "
@@ -169,7 +147,6 @@ alias openports='netstat -nape --inet'
 alias diskspace="du -S | sort -n -r |more"
 alias folders='du -h --max-depth=1'
 alias folderssort='find . -maxdepth 1 -type d -print0 | xargs -0 du -sk | sort -rn'
-alias tree='tree -CAhF --dirsfirst'
 alias treed='tree -CAFd'
 alias mountedinfo='df -hT'
 
@@ -196,6 +173,16 @@ alias kssh="kitty +kitten ssh"
 #######################################################
 # SPECIAL FUNCTIONS
 #######################################################
+# enable changing directory through yazi. 'q' to change, 'Q' to quit without changing
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
 # Extracts any archive(s) (if unp isn't installed)
 extract() {
 	for archive in "$@"; do
@@ -270,42 +257,6 @@ up() {
 		d=..
 	fi
 	cd $d
-}
-
-# Show the current distribution
-distribution ()
-{
-	local dtype="unknown"  # Default to unknown
-
-	# Use /etc/os-release for modern distro identification
-	if [ -r /etc/os-release ]; then
-		source /etc/os-release
-		case $ID in
-			fedora|rhel|centos)
-				dtype="redhat"
-				;;
-			sles|opensuse*)
-				dtype="suse"
-				;;
-			ubuntu|debian)
-				dtype="debian"
-				;;
-			gentoo)
-				dtype="gentoo"
-				;;
-			arch)
-				dtype="arch"
-				;;
-			slackware)
-				dtype="slackware"
-				;;
-			*)
-				# If ID is not recognized, keep dtype as unknown
-				;;
-		esac
-	fi
-
-	echo $dtype
 }
 
 # Automatically install the needed support files for this .bashrc file
