@@ -22,10 +22,16 @@ backup() {
 }
 
 add_custom_config() {
-  cp "$DOTFILES_DIR/.bashrc ~/.bashrc"
-  cp "$DOTFILES_DIR/.config/i3/config ~/.config/i3/config"
-  cp "$DOTFILES_DIR/.config/i3status/config ~/.config/i3status/config"
-  cp "$DOTFILES_DIR/.config/kitty/kitty.conf ~/.config/kitty/kitty.conf"
+  # Create directories if they don't exist
+  mkdir -p ~/.config/i3
+  mkdir -p ~/.config/i3status
+  mkdir -p ~/.config/kitty
+
+  # Copy files
+  cp "$DOTFILES_DIR/.bashrc" ~/.bashrc
+  cp "$DOTFILES_DIR/.config/i3/config" ~/.config/i3/config
+  cp "$DOTFILES_DIR/.config/i3status/config" ~/.config/i3status/config
+  cp "$DOTFILES_DIR/.config/kitty/kitty.conf" ~/.config/kitty/kitty.conf
 }
 
 echo "backing up old config files"
