@@ -5,6 +5,12 @@
 
 DOTFILES_DIR="$HOME/dotfiles"
 
+# Check if dotfiles directory exists
+if [ ! -d "$DOTFILES_DIR" ]; then
+    echo "Error: Dotfiles directory not found at $DOTFILES_DIR"
+    exit 1
+fi
+
 backup() {
   mv ~/.bashrc ~/.bashrc.bak
 
