@@ -7,8 +7,8 @@ DOTFILES_DIR="$HOME/dotfiles"
 
 # Check if dotfiles directory exists
 if [ ! -d "$DOTFILES_DIR" ]; then
-    echo "Error: Dotfiles directory not found at $DOTFILES_DIR"
-    exit 1
+  echo "Error: Dotfiles directory not found at $DOTFILES_DIR"
+  exit 1
 fi
 
 backup() {
@@ -25,6 +25,10 @@ backup() {
   if [ -f ~/.config/kitty/kitty.conf ]; then
     mv ~/.config/kitty/kitty.conf ~/.config/kitty/kitty.conf.bak
   fi
+
+  if [ -f ~/.config/nvim ]; then
+    mv -r ~/.config/nvim ~/.config/nvim.bak
+  fi
 }
 
 add_custom_config() {
@@ -38,6 +42,7 @@ add_custom_config() {
   cp "$DOTFILES_DIR/.config/i3/config" ~/.config/i3/config
   cp "$DOTFILES_DIR/.config/i3status/config" ~/.config/i3status/config
   cp "$DOTFILES_DIR/.config/kitty/kitty.conf" ~/.config/kitty/kitty.conf
+  cp -r "$DOTFILES_DIR/.config/nvim" ~/.config/nvim
 }
 
 echo "backing up old config files"
